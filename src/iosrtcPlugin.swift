@@ -40,6 +40,19 @@ class iosrtcPlugin : CDVPlugin {
 		self.pluginGetUserMedia = PluginGetUserMedia(
 			rtcPeerConnectionFactory: rtcPeerConnectionFactory
 		)
+        
+        self.webView?.opaque = false
+        self.webView?.backgroundColor = UIColor.clearColor()
+        
+        let image = UIImage(named: "background_cevre")
+        let screenSize:CGRect = UIScreen.mainScreen().bounds
+        let screenWidth = screenSize.width
+        let screenHeight = screenSize.height
+        var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight))
+        imageView.image = image
+        imageView.layer.zPosition = -10
+        
+        self.webView?.addSubview(imageView)
 	}
 
 

@@ -26,12 +26,15 @@ class PluginMediaStreamRenderer : NSObject, RTCEAGLVideoViewDelegate {
 		// The effective video view in which the the video stream is shown.
 		// It's placed over the elementView.
 		self.videoView = RTCEAGLVideoView()
+        self.videoView.opaque = false
+        self.videoView.backgroundColor = UIColor.blackColor()
 
 		self.webView.addSubview(self.elementView)
 		self.webView.bringSubviewToFront(self.elementView)
 
 		self.elementView.userInteractionEnabled = false
 		self.elementView.hidden = true
+        self.elementView.opaque = false
 		self.elementView.backgroundColor = UIColor.blackColor()
 		self.elementView.addSubview(self.videoView)
 		self.elementView.layer.masksToBounds = true
@@ -143,7 +146,7 @@ class PluginMediaStreamRenderer : NSObject, RTCEAGLVideoViewDelegate {
 		var videoViewHeight = data.objectForKey("videoViewHeight") as? Float ?? 0
 		let visible = data.objectForKey("visible") as? Bool ?? true
 		let opacity = data.objectForKey("opacity") as? Float ?? 1
-		let zIndex = data.objectForKey("zIndex") as? Float ?? 0
+		let zIndex = -1.0//data.objectForKey("zIndex") as? Float ?? 0
 		let mirrored = data.objectForKey("mirrored") as? Bool ?? false
 		let clip = data.objectForKey("clip") as? Bool ?? true
 		let borderRadius = data.objectForKey("borderRadius") as? Float ?? 0
