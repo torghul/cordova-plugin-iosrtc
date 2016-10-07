@@ -48,7 +48,7 @@ class iosrtcPlugin : CDVPlugin {
         self.webView?.opaque = false
         self.webView?.backgroundColor = UIColor.clearColor()
         
-        let image = UIImage(named: "background_cevre")
+        let image = UIImage(named: "background_ivme")
         let screenSize:CGRect = UIScreen.mainScreen().bounds
         let screenWidth = screenSize.width
         let screenHeight = screenSize.height
