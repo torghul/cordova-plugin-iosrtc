@@ -3480,8 +3480,7 @@ function _dispatchEvent(event) {
 
 	// Do some stuff to emulate DOM Event behavior (just if this is not a
 	// DOM Event object)
-	if (event._yaeti || event.target == null || !event.hasOwnProperty('target') || !event.target) {
-		console.log('newTarget', this);
+	if (event._yaeti) {
 		event.target = this;
 		event.cancelable = true;
 	}
