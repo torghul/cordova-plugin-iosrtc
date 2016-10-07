@@ -56,7 +56,7 @@ class iosrtcPlugin : CDVPlugin {
         imageView.image = image
         imageView.layer.zPosition = -10
         
-        self.webView?.addSubview(imageView)
+        self.webView?.superview?.addSubview(imageView)
 	}
 
 
