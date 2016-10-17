@@ -48,17 +48,34 @@ class iosrtcPlugin : CDVPlugin {
         self.webView?.opaque = false
         self.webView?.backgroundColor = UIColor.clearColor()
         
-        let image = UIImage(named: "background_ivme")
+        let image = appLaunchImage()
+
         let screenSize:CGRect = UIScreen.mainScreen().bounds
+        let screenSizeWithoutBounds = UIScreen.mainScreen().applicationFrame;
         let screenWidth = screenSize.width
         let screenHeight = screenSize.height
-        var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight))
+        let y = screenHeight - screenSizeWithoutBounds.height
+        let imageView = UIImageView(frame: CGRect(x: 0, y: y, width: screenWidth, height: screenHeight))
         imageView.image = image
         imageView.layer.zPosition = -10
-        
+
         self.webView?.superview?.addSubview(imageView)
 	}
 
+    func appLaunchImage() -> UIImage? {
+        let allPngImageNames = NSBundle.mainBundle().pathsForResourcesOfType("png", inDirectory: nil)
+
+        for imageName in allPngImageNames {
+            guard imageName.containsString("LaunchImage") else {continue}
+            guard let image = UIImage(named: imageName) else {continue}
+
+            if(image.scale == UIScreen.mainScreen().scale && (CGSizeEqualToSize(image.size, UIScreen.mainScreen().bounds.size))) {
+                return image
+            }
+        }
+
+        return nil
+    }
 
 	override func onReset() {
 		NSLog("iosrtcPlugin#onReset() | doing nothing")
