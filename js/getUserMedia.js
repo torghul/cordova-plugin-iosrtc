@@ -94,6 +94,9 @@ function getUserMedia(constraints) {
 		// Get requested video deviceId.
 		if (typeof constraints.video.deviceId === 'string') {
 			newConstraints.videoDeviceId = constraints.video.deviceId;
+		// Also check sourceId (mangled by adapter.js).
+		} else if (typeof constraints.video.sourceId === 'string') {
+			newConstraints.videoDeviceId = constraints.video.sourceId;
 		}
 
 		// Get requested min/max width.
@@ -134,7 +137,10 @@ function getUserMedia(constraints) {
 		return new Promise(function (resolve, reject) {
 			function onResultOK(data) {
 				debug('getUserMedia() | success');
-				resolve(MediaStream.create(data.stream));
+				var stream = MediaStream.create(data.stream);
+				resolve(stream);
+				// Emit "connected" on the stream.
+				stream.emitConnected();
 			}
 
 			function onResultError(error) {

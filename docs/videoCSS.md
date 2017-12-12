@@ -17,3 +17,19 @@ Supported CSS properties are:
 **Note**: if the specified z-index is < 0 (that, is, the video elements will be positioned "behind" the web view), you should specify the
 `<body>` `background-color` as `transparent` so the video element will be seen through the web view. This makes it possible to position
 HTML elements on top of the native video elements.
+
+## Quirks
+
+### Position of the `WebView` element does not match the corresponding `video` element
+
+In some cases iOS adds an offset to the `WebView` element. As a result the coordinates between the `video` element and it's corresponding `WebView` element are out of sync.
+This happens when the status bar is shown. This can be fixed through disabling the statusbar in two ways:
+
+* at runtime, using [cordova-plugin-statusbar](https://github.com/apache/cordova-plugin-statusbar)
+* permanently, editing the project `.plist` file:
+```xml
+  <key>UIViewControllerBasedStatusBarAppearance</key>
+  <false/>
+  <key>UIStatusBarHidden</key>
+  <true/>
+```

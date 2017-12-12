@@ -17,7 +17,10 @@ var
 	RTCIceCandidate = require('./RTCIceCandidate'),
 	RTCDataChannel = require('./RTCDataChannel'),
 	RTCDTMFSender = require('./RTCDTMFSender'),
+	RTCStatsResponse = require('./RTCStatsResponse'),
+	RTCStatsReport = require('./RTCStatsReport'),
 	MediaStream = require('./MediaStream'),
+	MediaStreamTrack = require('./MediaStreamTrack'),
 	Errors = require('./Errors');
 
 
@@ -410,14 +413,14 @@ RTCPeerConnection.prototype.addIceCandidate = function (candidate) {
 
 	debug('addIceCandidate() | [candidate:%o]', candidate);
 
-	if (!(candidate instanceof RTCIceCandidate)) {
+	if (typeof candidate !== 'object') {
 		if (isPromise) {
 			return new Promise(function (resolve, reject) {
-				reject(new global.DOMError('addIceCandidate() must be called with a RTCIceCandidate instance as first argument'));
+				reject(new global.DOMError('addIceCandidate() must be called with a RTCIceCandidate instance or RTCIceCandidateInit object as argument'));
 			});
 		} else {
 			if (typeof errback === 'function') {
-				errback(new global.DOMError('addIceCandidate() must be called with a RTCIceCandidate instance as first argument'));
+				errback(new global.DOMError('addIceCandidate() must be called with a RTCIceCandidate instance or RTCIceCandidateInit object as argument'));
 			}
 			return;
 		}
@@ -596,6 +599,84 @@ RTCPeerConnection.prototype.createDTMFSender = function (track) {
 	return new RTCDTMFSender(this, track);
 };
 
+RTCPeerConnection.prototype.getStats = function () {
+	var self = this,
+		isPromise,
+		selector,
+		callback, errback;
+
+	if (typeof arguments[0] !== 'function') {
+		isPromise = true;
+		selector = arguments[0];
+	} else {
+		isPromise = false;
+		callback = arguments[0];
+		selector = arguments[1];
+		errback = arguments[2];
+	}
+
+	if (selector && !(selector instanceof MediaStreamTrack)) {
+		throw new Error('getStats() must be called with null or a valid MediaStreamTrack instance as argument');
+	}
+
+	if (isClosed.call(this)) {
+		throw new Errors.InvalidStateError('peerconnection is closed');
+	}
+
+	debug('getStats() [selector:%o]', selector);
+
+	if (isPromise) {
+		return new Promise(function (resolve, reject) {
+			function onResultOK(array) {
+				if (isClosed.call(self)) {
+					return;
+				}
+
+				var res = [];
+				array.forEach(function (stat) {
+					res.push(new RTCStatsReport(stat));
+				});
+				resolve(new RTCStatsResponse(res));
+			}
+
+			function onResultError(error) {
+				if (isClosed.call(self)) {
+					return;
+				}
+
+				debugerror('getStats() | failure: %s', error);
+				reject(new global.DOMError(error));
+			}
+
+			exec(onResultOK, onResultError, 'iosrtcPlugin', 'RTCPeerConnection_getStats', [self.pcId, selector ? selector.id : null]);
+		});
+	}
+
+	function onResultOK(array) {
+		if (isClosed.call(self)) {
+			return;
+		}
+
+		var res = [];
+		array.forEach(function (stat) {
+			res.push(new RTCStatsReport(stat));
+		});
+		callback(new RTCStatsResponse(res));
+	}
+
+	function onResultError(error) {
+		if (isClosed.call(self)) {
+			return;
+		}
+
+		debugerror('getStats() | failure: %s', error);
+		if (typeof errback === 'function') {
+			errback(new global.DOMError(error));
+		}
+	}
+
+	exec(onResultOK, onResultError, 'iosrtcPlugin', 'RTCPeerConnection_getStats', [this.pcId, selector ? selector.id : null]);
+};
 
 RTCPeerConnection.prototype.close = function () {
 	if (isClosed.call(this)) {

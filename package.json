@@ -1,8 +1,11 @@
 {
   "name": "cordova-plugin-iosrtc",
-  "version": "3.1.0",
+  "version": "4.0.2",
   "description": "Cordova iOS plugin exposing the full WebRTC W3C JavaScript APIs",
-  "author": "Iñaki Baz Castillo at eFace2Face, inc. (https://eface2face.com)",
+  "author": "Iñaki Baz Castillo (https://inakibaz.me)",
+  "contributors": [
+    "Saúl Ibarra Corretgé (http://bettercallsaghul.com)"
+  ],
   "license": "MIT",
   "keywords": [
     "ecosystem:cordova",
@@ -10,29 +13,30 @@
     "ios"
   ],
   "main": "js/iosrtc.js",
-  "homepage": "https://github.com/eface2face/cordova-plugin-iosrtc",
+  "homepage": "https://github.com/BasqueVoIPMafia/cordova-plugin-iosrtc",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eface2face/cordova-plugin-iosrtc.git"
+    "url": "git+https://github.com/BasqueVoIPMafia/cordova-plugin-iosrtc.git"
   },
   "bugs": {
-    "url": "https://github.com/eface2face/cordova-plugin-iosrtc/issues"
+    "url": "https://github.com/BasqueVoIPMafia/cordova-plugin-iosrtc/issues"
   },
   "dependencies": {
-    "debug": "^2.2.0",
+    "debug": "^2.6.8",
     "domready": "^1.0.8",
     "random-number": "^0.0.7",
     "yaeti": "^0.0.6"
   },
   "devDependencies": {
-    "browserify": "^13.0.1",
+    "browserify": "^14.4.0",
     "gulp": "git+https://github.com/gulpjs/gulp.git#4.0",
-    "gulp-header": "^1.8.7",
+    "gulp-derequire": "^2.1.0",
+    "gulp-header": "^1.8.8",
     "gulp-jscs": "^4.0.0",
     "gulp-jscs-stylish": "^1.4.0",
-    "gulp-jshint": "^2.0.1",
-    "jshint": "^2.9.2",
-    "jshint-stylish": "~2.2.0",
+    "gulp-jshint": "^2.0.4",
+    "jshint": "^2.9.4",
+    "jshint-stylish": "~2.2.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },

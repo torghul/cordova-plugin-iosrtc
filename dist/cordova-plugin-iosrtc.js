@@ -1,11 +1,12 @@
 /*
- * cordova-plugin-iosrtc v3.1.0
+ * cordova-plugin-iosrtc v4.0.2
  * Cordova iOS plugin exposing the full WebRTC W3C JavaScript APIs
- * Copyright 2015-2016 Iñaki Baz Castillo at eFace2Face, inc. (https://eface2face.com)
+ * Copyright 2015-2017 eFace2Face, Inc. (https://eface2face.com)
+ * Copyright 2017 BasqueVoIPMafia (https://github.com/BasqueVoIPMafia)
  * License MIT
  */
 
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iosrtc = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.iosrtc = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 /**
  * Expose an object with WebRTC Errors.
  */
@@ -49,7 +50,7 @@ function addError(name) {
 	Errors[name].prototype = new IntermediateInheritor();
 }
 
-},{}],2:[function(require,module,exports){
+},{}],2:[function(_dereq_,module,exports){
 /**
  * Expose the MediaDeviceInfo class.
  */
@@ -84,7 +85,7 @@ function MediaDeviceInfo(data) {
 	});
 }
 
-},{}],3:[function(require,module,exports){
+},{}],3:[function(_dereq_,module,exports){
 /**
  * Expose the MediaStream class.
  * Make MediaStream be a Blob so it can be consumed by URL.createObjectURL().
@@ -100,10 +101,10 @@ var MediaStream = module.exports = window.Blob,
 /**
  * Dependencies.
  */
-	debug = require('debug')('iosrtc:MediaStream'),
-	exec = require('cordova/exec'),
-	EventTarget = require('yaeti').EventTarget,
-	MediaStreamTrack = require('./MediaStreamTrack'),
+	debug = _dereq_('debug')('iosrtc:MediaStream'),
+	exec = _dereq_('cordova/exec'),
+	EventTarget = _dereq_('yaeti').EventTarget,
+	MediaStreamTrack = _dereq_('./MediaStreamTrack'),
 
 
 /**
@@ -187,6 +188,10 @@ MediaStream.create = function (dataFromEvent) {
 	return stream;
 };
 
+
+MediaStream.prototype.getBlobId = function () {
+	return this._blobId;
+};
 
 MediaStream.prototype.getAudioTracks = function () {
 	debug('getAudioTracks()');
@@ -461,7 +466,7 @@ function onEvent(data) {
 	}
 }
 
-},{"./MediaStreamTrack":5,"cordova/exec":undefined,"debug":16,"yaeti":21}],4:[function(require,module,exports){
+},{"./MediaStreamTrack":5,"cordova/exec":undefined,"debug":17,"yaeti":23}],4:[function(_dereq_,module,exports){
 /**
  * Expose the MediaStreamRenderer class.
  */
@@ -472,11 +477,11 @@ module.exports = MediaStreamRenderer;
  * Dependencies.
  */
 var
-	debug = require('debug')('iosrtc:MediaStreamRenderer'),
-	exec = require('cordova/exec'),
-	randomNumber = require('random-number').generator({min: 10000, max: 99999, integer: true}),
-	EventTarget = require('yaeti').EventTarget,
-	MediaStream = require('./MediaStream');
+	debug = _dereq_('debug')('iosrtc:MediaStreamRenderer'),
+	exec = _dereq_('cordova/exec'),
+	randomNumber = _dereq_('random-number').generator({min: 10000, max: 99999, integer: true}),
+	EventTarget = _dereq_('yaeti').EventTarget,
+	MediaStream = _dereq_('./MediaStream');
 
 
 function MediaStreamRenderer(element) {
@@ -813,7 +818,7 @@ function getElementPositionAndSize() {
 	};
 }
 
-},{"./MediaStream":3,"cordova/exec":undefined,"debug":16,"random-number":20,"yaeti":21}],5:[function(require,module,exports){
+},{"./MediaStream":3,"cordova/exec":undefined,"debug":17,"random-number":22,"yaeti":23}],5:[function(_dereq_,module,exports){
 /**
  * Expose the MediaStreamTrack class.
  */
@@ -829,10 +834,10 @@ module.exports = MediaStreamTrack;
  * Dependencies.
  */
 var
-	debug = require('debug')('iosrtc:MediaStreamTrack'),
-	exec = require('cordova/exec'),
-	enumerateDevices = require('./enumerateDevices'),
-	EventTarget = require('yaeti').EventTarget;
+	debug = _dereq_('debug')('iosrtc:MediaStreamTrack'),
+	exec = _dereq_('cordova/exec'),
+	enumerateDevices = _dereq_('./enumerateDevices'),
+	EventTarget = _dereq_('yaeti').EventTarget;
 
 
 function MediaStreamTrack(dataFromEvent) {
@@ -933,7 +938,7 @@ function onEvent(data) {
 	}
 }
 
-},{"./enumerateDevices":11,"cordova/exec":undefined,"debug":16,"yaeti":21}],6:[function(require,module,exports){
+},{"./enumerateDevices":13,"cordova/exec":undefined,"debug":17,"yaeti":23}],6:[function(_dereq_,module,exports){
 /**
  * Expose the RTCDTMFSender class.
  */
@@ -944,11 +949,11 @@ module.exports = RTCDTMFSender;
  * Dependencies.
  */
 var
-	debug = require('debug')('iosrtc:RTCDTMFSender'),
-	debugerror = require('debug')('iosrtc:ERROR:RTCDTMFSender'),
-	exec = require('cordova/exec'),
-	randomNumber = require('random-number').generator({min: 10000, max: 99999, integer: true}),
-	EventTarget = require('yaeti').EventTarget;
+	debug = _dereq_('debug')('iosrtc:RTCDTMFSender'),
+	debugerror = _dereq_('debug')('iosrtc:ERROR:RTCDTMFSender'),
+	exec = _dereq_('cordova/exec'),
+	randomNumber = _dereq_('random-number').generator({min: 10000, max: 99999, integer: true}),
+	EventTarget = _dereq_('yaeti').EventTarget;
 
 
 debugerror.log = console.warn.bind(console);
@@ -1065,7 +1070,7 @@ function onEvent(data) {
 	}
 }
 
-},{"cordova/exec":undefined,"debug":16,"random-number":20,"yaeti":21}],7:[function(require,module,exports){
+},{"cordova/exec":undefined,"debug":17,"random-number":22,"yaeti":23}],7:[function(_dereq_,module,exports){
 /**
  * Expose the RTCDataChannel class.
  */
@@ -1076,11 +1081,11 @@ module.exports = RTCDataChannel;
  * Dependencies.
  */
 var
-	debug = require('debug')('iosrtc:RTCDataChannel'),
-	debugerror = require('debug')('iosrtc:ERROR:RTCDataChannel'),
-	exec = require('cordova/exec'),
-	randomNumber = require('random-number').generator({min: 10000, max: 99999, integer: true}),
-	EventTarget = require('yaeti').EventTarget;
+	debug = _dereq_('debug')('iosrtc:RTCDataChannel'),
+	debugerror = _dereq_('debug')('iosrtc:ERROR:RTCDataChannel'),
+	exec = _dereq_('cordova/exec'),
+	randomNumber = _dereq_('random-number').generator({min: 10000, max: 99999, integer: true}),
+	EventTarget = _dereq_('yaeti').EventTarget;
 
 
 debugerror.log = console.warn.bind(console);
@@ -1127,6 +1132,7 @@ function RTCDataChannel(peerConnection, label, options, dataFromEvent) {
 		this.id = options.hasOwnProperty('id') ? Number(options.id) : undefined;
 		this.readyState = 'connecting';
 		this.bufferedAmount = 0;
+		this.bufferedAmountLowThreshold = 0;
 
 		// Private attributes.
 		this.peerConnection = peerConnection;
@@ -1147,6 +1153,7 @@ function RTCDataChannel(peerConnection, label, options, dataFromEvent) {
 		this.id = dataFromEvent.id;
 		this.readyState = dataFromEvent.readyState;
 		this.bufferedAmount = dataFromEvent.bufferedAmount;
+		this.bufferedAmountLowThreshold = dataFromEvent.bufferedAmountLowThreshold;
 
 		// Private attributes.
 		this.peerConnection = peerConnection;
@@ -1193,16 +1200,10 @@ RTCDataChannel.prototype.send = function (data) {
 		return;
 	}
 
-	var self = this;
-
-	function onResultOK(data) {
-		self.bufferedAmount = data.bufferedAmount;
-	}
-
 	if (typeof data === 'string' || data instanceof String) {
-		exec(onResultOK, null, 'iosrtcPlugin', 'RTCPeerConnection_RTCDataChannel_sendString', [this.peerConnection.pcId, this.dcId, data]);
+		exec(null, null, 'iosrtcPlugin', 'RTCPeerConnection_RTCDataChannel_sendString', [this.peerConnection.pcId, this.dcId, data]);
 	} else if (window.ArrayBuffer && data instanceof window.ArrayBuffer) {
-		exec(onResultOK, null, 'iosrtcPlugin', 'RTCPeerConnection_RTCDataChannel_sendBinary', [this.peerConnection.pcId, this.dcId, data]);
+		exec(null, null, 'iosrtcPlugin', 'RTCPeerConnection_RTCDataChannel_sendBinary', [this.peerConnection.pcId, this.dcId, data]);
 	} else if (
 		(window.Int8Array && data instanceof window.Int8Array) ||
 		(window.Uint8Array && data instanceof window.Uint8Array) ||
@@ -1215,7 +1216,7 @@ RTCDataChannel.prototype.send = function (data) {
 		(window.Float64Array && data instanceof window.Float64Array) ||
 		(window.DataView && data instanceof window.DataView)
 	) {
-		exec(onResultOK, null, 'iosrtcPlugin', 'RTCPeerConnection_RTCDataChannel_sendBinary', [this.peerConnection.pcId, this.dcId, data.buffer]);
+		exec(null, null, 'iosrtcPlugin', 'RTCPeerConnection_RTCDataChannel_sendBinary', [this.peerConnection.pcId, this.dcId, data.buffer]);
 	} else {
 		throw new Error('invalid data type');
 	}
@@ -1286,10 +1287,21 @@ function onEvent(data) {
 			event.data = data.message;
 			this.dispatchEvent(event);
 			break;
+
+		case 'bufferedamount':
+			this.bufferedAmount = data.bufferedAmount;
+
+			if (this.bufferedAmountLowThreshold > 0 && this.bufferedAmountLowThreshold > this.bufferedAmount) {
+				event = new Event('bufferedamountlow');
+				event.bufferedAmount = this.bufferedAmount;
+				this.dispatchEvent(event);
+			}
+
+			break;
 	}
 }
 
-},{"cordova/exec":undefined,"debug":16,"random-number":20,"yaeti":21}],8:[function(require,module,exports){
+},{"cordova/exec":undefined,"debug":17,"random-number":22,"yaeti":23}],8:[function(_dereq_,module,exports){
 /**
  * Expose the RTCIceCandidate class.
  */
@@ -1305,7 +1317,7 @@ function RTCIceCandidate(data) {
 	this.candidate = data.candidate;
 }
 
-},{}],9:[function(require,module,exports){
+},{}],9:[function(_dereq_,module,exports){
 (function (global){
 /**
  * Expose the RTCPeerConnection class.
@@ -1317,17 +1329,20 @@ module.exports = RTCPeerConnection;
  * Dependencies.
  */
 var
-	debug = require('debug')('iosrtc:RTCPeerConnection'),
-	debugerror = require('debug')('iosrtc:ERROR:RTCPeerConnection'),
-	exec = require('cordova/exec'),
-	randomNumber = require('random-number').generator({min: 10000, max: 99999, integer: true}),
-	EventTarget = require('yaeti').EventTarget,
-	RTCSessionDescription = require('./RTCSessionDescription'),
-	RTCIceCandidate = require('./RTCIceCandidate'),
-	RTCDataChannel = require('./RTCDataChannel'),
-	RTCDTMFSender = require('./RTCDTMFSender'),
-	MediaStream = require('./MediaStream'),
-	Errors = require('./Errors');
+	debug = _dereq_('debug')('iosrtc:RTCPeerConnection'),
+	debugerror = _dereq_('debug')('iosrtc:ERROR:RTCPeerConnection'),
+	exec = _dereq_('cordova/exec'),
+	randomNumber = _dereq_('random-number').generator({min: 10000, max: 99999, integer: true}),
+	EventTarget = _dereq_('yaeti').EventTarget,
+	RTCSessionDescription = _dereq_('./RTCSessionDescription'),
+	RTCIceCandidate = _dereq_('./RTCIceCandidate'),
+	RTCDataChannel = _dereq_('./RTCDataChannel'),
+	RTCDTMFSender = _dereq_('./RTCDTMFSender'),
+	RTCStatsResponse = _dereq_('./RTCStatsResponse'),
+	RTCStatsReport = _dereq_('./RTCStatsReport'),
+	MediaStream = _dereq_('./MediaStream'),
+	MediaStreamTrack = _dereq_('./MediaStreamTrack'),
+	Errors = _dereq_('./Errors');
 
 
 debugerror.log = console.warn.bind(console);
@@ -1719,14 +1734,14 @@ RTCPeerConnection.prototype.addIceCandidate = function (candidate) {
 
 	debug('addIceCandidate() | [candidate:%o]', candidate);
 
-	if (!(candidate instanceof RTCIceCandidate)) {
+	if (typeof candidate !== 'object') {
 		if (isPromise) {
 			return new Promise(function (resolve, reject) {
-				reject(new global.DOMError('addIceCandidate() must be called with a RTCIceCandidate instance as first argument'));
+				reject(new global.DOMError('addIceCandidate() must be called with a RTCIceCandidate instance or RTCIceCandidateInit object as argument'));
 			});
 		} else {
 			if (typeof errback === 'function') {
-				errback(new global.DOMError('addIceCandidate() must be called with a RTCIceCandidate instance as first argument'));
+				errback(new global.DOMError('addIceCandidate() must be called with a RTCIceCandidate instance or RTCIceCandidateInit object as argument'));
 			}
 			return;
 		}
@@ -1905,6 +1920,84 @@ RTCPeerConnection.prototype.createDTMFSender = function (track) {
 	return new RTCDTMFSender(this, track);
 };
 
+RTCPeerConnection.prototype.getStats = function () {
+	var self = this,
+		isPromise,
+		selector,
+		callback, errback;
+
+	if (typeof arguments[0] !== 'function') {
+		isPromise = true;
+		selector = arguments[0];
+	} else {
+		isPromise = false;
+		callback = arguments[0];
+		selector = arguments[1];
+		errback = arguments[2];
+	}
+
+	if (selector && !(selector instanceof MediaStreamTrack)) {
+		throw new Error('getStats() must be called with null or a valid MediaStreamTrack instance as argument');
+	}
+
+	if (isClosed.call(this)) {
+		throw new Errors.InvalidStateError('peerconnection is closed');
+	}
+
+	debug('getStats() [selector:%o]', selector);
+
+	if (isPromise) {
+		return new Promise(function (resolve, reject) {
+			function onResultOK(array) {
+				if (isClosed.call(self)) {
+					return;
+				}
+
+				var res = [];
+				array.forEach(function (stat) {
+					res.push(new RTCStatsReport(stat));
+				});
+				resolve(new RTCStatsResponse(res));
+			}
+
+			function onResultError(error) {
+				if (isClosed.call(self)) {
+					return;
+				}
+
+				debugerror('getStats() | failure: %s', error);
+				reject(new global.DOMError(error));
+			}
+
+			exec(onResultOK, onResultError, 'iosrtcPlugin', 'RTCPeerConnection_getStats', [self.pcId, selector ? selector.id : null]);
+		});
+	}
+
+	function onResultOK(array) {
+		if (isClosed.call(self)) {
+			return;
+		}
+
+		var res = [];
+		array.forEach(function (stat) {
+			res.push(new RTCStatsReport(stat));
+		});
+		callback(new RTCStatsResponse(res));
+	}
+
+	function onResultError(error) {
+		if (isClosed.call(self)) {
+			return;
+		}
+
+		debugerror('getStats() | failure: %s', error);
+		if (typeof errback === 'function') {
+			errback(new global.DOMError(error));
+		}
+	}
+
+	exec(onResultOK, onResultError, 'iosrtcPlugin', 'RTCPeerConnection_getStats', [this.pcId, selector ? selector.id : null]);
+};
 
 RTCPeerConnection.prototype.close = function () {
 	if (isClosed.call(this)) {
@@ -2039,7 +2132,7 @@ function onEvent(data) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Errors":1,"./MediaStream":3,"./RTCDTMFSender":6,"./RTCDataChannel":7,"./RTCIceCandidate":8,"./RTCSessionDescription":10,"cordova/exec":undefined,"debug":16,"random-number":20,"yaeti":21}],10:[function(require,module,exports){
+},{"./Errors":1,"./MediaStream":3,"./MediaStreamTrack":5,"./RTCDTMFSender":6,"./RTCDataChannel":7,"./RTCIceCandidate":8,"./RTCSessionDescription":10,"./RTCStatsReport":11,"./RTCStatsResponse":12,"cordova/exec":undefined,"debug":17,"random-number":22,"yaeti":23}],10:[function(_dereq_,module,exports){
 /**
  * Expose the RTCSessionDescription class.
  */
@@ -2054,7 +2147,47 @@ function RTCSessionDescription(data) {
 	this.sdp = data.sdp;
 }
 
-},{}],11:[function(require,module,exports){
+},{}],11:[function(_dereq_,module,exports){
+/**
+ * Expose the RTCStatsReport class.
+ */
+module.exports = RTCStatsReport;
+
+function RTCStatsReport(data) {
+	data = data || [];
+
+	this.id = data.reportId;
+	this.timestamp = data.timestamp;
+	this.type = data.type;
+
+	this.names = function () {
+		return Object.keys(data.values);
+	};
+
+	this.stat = function (key) {
+		return data.values[key] || '';
+	};
+}
+
+},{}],12:[function(_dereq_,module,exports){
+/**
+ * Expose the RTCStatsResponse class.
+ */
+module.exports = RTCStatsResponse;
+
+function RTCStatsResponse(data) {
+	data = data || [];
+
+	this.result = function () {
+		return data;
+	};
+
+	this.namedItem = function () {
+		return null;
+	};
+}
+
+},{}],13:[function(_dereq_,module,exports){
 /**
  * Expose the enumerateDevices function.
  */
@@ -2065,9 +2198,9 @@ module.exports = enumerateDevices;
  * Dependencies.
  */
 var
-	debug = require('debug')('iosrtc:enumerateDevices'),
-	exec = require('cordova/exec'),
-	MediaDeviceInfo = require('./MediaDeviceInfo');
+	debug = _dereq_('debug')('iosrtc:enumerateDevices'),
+	exec = _dereq_('cordova/exec'),
+	MediaDeviceInfo = _dereq_('./MediaDeviceInfo');
 
 
 function enumerateDevices() {
@@ -2123,7 +2256,7 @@ function getMediaDeviceInfos(devices) {
 	return mediaDeviceInfos;
 }
 
-},{"./MediaDeviceInfo":2,"cordova/exec":undefined,"debug":16}],12:[function(require,module,exports){
+},{"./MediaDeviceInfo":2,"cordova/exec":undefined,"debug":17}],14:[function(_dereq_,module,exports){
 /**
  * Expose the getUserMedia function.
  */
@@ -2134,11 +2267,11 @@ module.exports = getUserMedia;
  * Dependencies.
  */
 var
-	debug = require('debug')('iosrtc:getUserMedia'),
-	debugerror = require('debug')('iosrtc:ERROR:getUserMedia'),
-	exec = require('cordova/exec'),
-	MediaStream = require('./MediaStream'),
-	Errors = require('./Errors');
+	debug = _dereq_('debug')('iosrtc:getUserMedia'),
+	debugerror = _dereq_('debug')('iosrtc:ERROR:getUserMedia'),
+	exec = _dereq_('cordova/exec'),
+	MediaStream = _dereq_('./MediaStream'),
+	Errors = _dereq_('./Errors');
 
 debugerror.log = console.warn.bind(console);
 
@@ -2220,6 +2353,9 @@ function getUserMedia(constraints) {
 		// Get requested video deviceId.
 		if (typeof constraints.video.deviceId === 'string') {
 			newConstraints.videoDeviceId = constraints.video.deviceId;
+		// Also check sourceId (mangled by adapter.js).
+		} else if (typeof constraints.video.sourceId === 'string') {
+			newConstraints.videoDeviceId = constraints.video.sourceId;
 		}
 
 		// Get requested min/max width.
@@ -2260,7 +2396,10 @@ function getUserMedia(constraints) {
 		return new Promise(function (resolve, reject) {
 			function onResultOK(data) {
 				debug('getUserMedia() | success');
-				resolve(MediaStream.create(data.stream));
+				var stream = MediaStream.create(data.stream);
+				resolve(stream);
+				// Emit "connected" on the stream.
+				stream.emitConnected();
 			}
 
 			function onResultError(error) {
@@ -2294,7 +2433,7 @@ function getUserMedia(constraints) {
 	exec(onResultOK, onResultError, 'iosrtcPlugin', 'getUserMedia', [newConstraints]);
 }
 
-},{"./Errors":1,"./MediaStream":3,"cordova/exec":undefined,"debug":16}],13:[function(require,module,exports){
+},{"./Errors":1,"./MediaStream":3,"cordova/exec":undefined,"debug":17}],15:[function(_dereq_,module,exports){
 (function (global){
 /**
  * Variables.
@@ -2315,19 +2454,18 @@ var
 /**
  * Dependencies.
  */
-	debug                  = require('debug')('iosrtc'),
-	exec                   = require('cordova/exec'),
-	domready               = require('domready'),
+	debug                  = _dereq_('debug')('iosrtc'),
+	exec                   = _dereq_('cordova/exec'),
+	domready               = _dereq_('domready'),
 
-	getUserMedia           = require('./getUserMedia'),
-	enumerateDevices       = require('./enumerateDevices'),
-	RTCPeerConnection      = require('./RTCPeerConnection'),
-	RTCSessionDescription  = require('./RTCSessionDescription'),
-	RTCIceCandidate        = require('./RTCIceCandidate'),
-	MediaStream            = require('./MediaStream'),
-	MediaStreamTrack       = require('./MediaStreamTrack'),
-	videoElementsHandler   = require('./videoElementsHandler'),
-	rtcninjaPlugin         = require('./rtcninjaPlugin');
+	getUserMedia           = _dereq_('./getUserMedia'),
+	enumerateDevices       = _dereq_('./enumerateDevices'),
+	RTCPeerConnection      = _dereq_('./RTCPeerConnection'),
+	RTCSessionDescription  = _dereq_('./RTCSessionDescription'),
+	RTCIceCandidate        = _dereq_('./RTCIceCandidate'),
+	MediaStream            = _dereq_('./MediaStream'),
+	MediaStreamTrack       = _dereq_('./MediaStreamTrack'),
+	videoElementsHandler   = _dereq_('./videoElementsHandler');
 
 
 /**
@@ -2350,17 +2488,11 @@ module.exports = {
 	// Expose a function to handle a video not yet inserted in the DOM.
 	observeVideo:          videoElementsHandler.observeVideo,
 
-	// Select audio output (earpiece or speaker).
-	selectAudioOutput:     selectAudioOutput,
-
 	// Expose a function to pollute window and naigator namespaces.
 	registerGlobals:       registerGlobals,
 
-	// Expose the rtcninjaPlugin module.
-	rtcninjaPlugin:        rtcninjaPlugin,
-
 	// Expose the debug module.
-	debug:                 require('debug'),
+	debug:                 _dereq_('debug'),
 
 	// Debug function to see what happens internally.
 	dump:                  dump
@@ -2387,23 +2519,9 @@ function refreshVideos() {
 }
 
 
-function selectAudioOutput(output) {
-	debug('selectAudioOutput() | [output:"%s"]', output);
-
-	switch (output) {
-		case 'earpiece':
-			exec(null, null, 'iosrtcPlugin', 'selectAudioOutputEarpiece', []);
-			break;
-		case 'speaker':
-			exec(null, null, 'iosrtcPlugin', 'selectAudioOutputSpeaker', []);
-			break;
-		default:
-			throw new Error('output must be "earpiece" or "speaker"');
-	}
-}
-
-
 function registerGlobals() {
+	debug('registerGlobals()');
+
 	if (!global.navigator) {
 		global.navigator = {};
 	}
@@ -2431,39 +2549,7 @@ function dump() {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./MediaStream":3,"./MediaStreamTrack":5,"./RTCIceCandidate":8,"./RTCPeerConnection":9,"./RTCSessionDescription":10,"./enumerateDevices":11,"./getUserMedia":12,"./rtcninjaPlugin":14,"./videoElementsHandler":15,"cordova/exec":undefined,"debug":16,"domready":19}],14:[function(require,module,exports){
-/**
- * Expose the rtcninjaPlugin object.
- */
-module.exports = {
-	isRequired: function () {
-		return true;
-	},
-
-	isInstalled: function () {
-		return true;
-	},
-
-	interface: {
-		getUserMedia:          require('./getUserMedia'),
-		enumerateDevices:      require('./enumerateDevices'),
-		getMediaDevices:       require('./enumerateDevices'),  // TMP
-		RTCPeerConnection:     require('./RTCPeerConnection'),
-		RTCSessionDescription: require('./RTCSessionDescription'),
-		RTCIceCandidate:       require('./RTCIceCandidate'),
-		MediaStreamTrack:      require('./MediaStreamTrack'),
-		attachMediaStream:     attachMediaStream,
-		canRenegotiate:        true
-	}
-};
-
-
-function attachMediaStream(element, stream) {
-	element.src = URL.createObjectURL(stream);
-	return element;
-}
-
-},{"./MediaStreamTrack":5,"./RTCIceCandidate":8,"./RTCPeerConnection":9,"./RTCSessionDescription":10,"./enumerateDevices":11,"./getUserMedia":12}],15:[function(require,module,exports){
+},{"./MediaStream":3,"./MediaStreamTrack":5,"./RTCIceCandidate":8,"./RTCPeerConnection":9,"./RTCSessionDescription":10,"./enumerateDevices":13,"./getUserMedia":14,"./videoElementsHandler":16,"cordova/exec":undefined,"debug":17,"domready":19}],16:[function(_dereq_,module,exports){
 (function (global){
 /**
  * Expose a function that must be called when the library is loaded.
@@ -2476,8 +2562,9 @@ module.exports.observeVideo = observeVideo;
 /**
  * Dependencies.
  */
-var debug = require('debug')('iosrtc:videoElementsHandler'),
-	MediaStreamRenderer = require('./MediaStreamRenderer'),
+var
+	debug = _dereq_('debug')('iosrtc:videoElementsHandler'),
+	MediaStreamRenderer = _dereq_('./MediaStreamRenderer'),
 
 
 /**
@@ -2502,8 +2589,7 @@ var debug = require('debug')('iosrtc:videoElementsHandler'),
 
 	// Video element mutation observer.
 	videoObserver = new MutationObserver(function (mutations) {
-		var i, numMutations, mutation,
-			video;
+		var i, numMutations, mutation, video;
 
 		for (i = 0, numMutations = mutations.length; i < numMutations; i++) {
 			mutation = mutations[i];
@@ -2511,8 +2597,8 @@ var debug = require('debug')('iosrtc:videoElementsHandler'),
 			// HTML video element.
 			video = mutation.target;
 
-			// .src removed.
-			if (!video.src) {
+			// .src or .srcObject removed.
+			if (!video.src && !video.srcObject) {
 				// If this video element was previously handling a MediaStreamRenderer, release it.
 				releaseMediaStreamRenderer(video);
 				continue;
@@ -2524,7 +2610,8 @@ var debug = require('debug')('iosrtc:videoElementsHandler'),
 
 	// DOM mutation observer.
 	domObserver = new MutationObserver(function (mutations) {
-		var i, numMutations, mutation,
+		var
+			i, numMutations, mutation,
 			j, numNodes, node;
 
 		for (i = 0, numMutations = mutations.length; i < numMutations; i++) {
@@ -2594,9 +2681,9 @@ var debug = require('debug')('iosrtc:videoElementsHandler'),
 
 
 function videoElementsHandler(_mediaStreams, _mediaStreamRenderers) {
-	var existingVideos = document.querySelectorAll('video'),
-		i, len,
-		video;
+	var
+		existingVideos = document.querySelectorAll('video'),
+		i, len, video;
 
 	mediaStreams = _mediaStreams;
 	mediaStreamRenderers = _mediaStreamRenderers;
@@ -2636,9 +2723,9 @@ function videoElementsHandler(_mediaStreams, _mediaStreamRenderers) {
 function observeVideo(video) {
 	debug('observeVideo()');
 
-	// If the video already has a src property but is not yet handled by the plugin
+	// If the video already has a src/srcObject property but is not yet handled by the plugin
 	// then handle it now.
-	if (video.src && !video._iosrtcMediaStreamRendererId) {
+	if ((video.src || video.srcObject) && !video._iosrtcMediaStreamRendererId) {
 		handleVideo(video);
 	}
 
@@ -2661,8 +2748,7 @@ function observeVideo(video) {
 		characterDataOldValue: false,
 		// Set to an array of attribute local names (without namespace) if not all attribute mutations
 		// need to be observed.
-		// TODO: Add srcObject, mozSrcObject
-		attributeFilter: ['src']
+		attributeFilter: ['src', 'srcObject']
 	});
 
 	// Intercept video 'error' events if it's due to the attached MediaStream.
@@ -2681,49 +2767,69 @@ function observeVideo(video) {
  */
 
 function handleVideo(video) {
-	var xhr = new XMLHttpRequest();
+	var
+		xhr = new XMLHttpRequest(),
+		stream;
 
-	xhr.open('GET', video.src, true);
-	xhr.responseType = 'blob';
-	xhr.onload = function () {
-		if (xhr.status !== 200) {
-			// If this video element was previously handling a MediaStreamRenderer, release it.
-			releaseMediaStreamRenderer(video);
-
-			return;
-		}
-
-		var reader = new FileReader();
-
-		// Some versions of Safari fail to set onloadend property, some others do not react
-		// on 'loadend' event. Try everything here.
-		try {
-			reader.onloadend = onloadend;
-		} catch (error) {
-			reader.addEventListener('loadend', onloadend);
-		}
-		reader.readAsText(xhr.response);
-
-		function onloadend() {
-			var mediaStreamBlobId = reader.result;
-
-			// The retrieved URL does not point to a MediaStream.
-			if (!mediaStreamBlobId || typeof mediaStreamBlobId !== 'string' || !MEDIASTREAM_ID_REGEXP.test(mediaStreamBlobId)) {
+	// The app has set video.src.
+	if (video.src) {
+		xhr.open('GET', video.src, true);
+		xhr.responseType = 'blob';
+		xhr.onload = function () {
+			if (xhr.status !== 200) {
 				// If this video element was previously handling a MediaStreamRenderer, release it.
 				releaseMediaStreamRenderer(video);
 
 				return;
 			}
 
-			provideMediaStreamRenderer(video, mediaStreamBlobId);
+			var reader = new FileReader();
+
+			// Some versions of Safari fail to set onloadend property, some others do not react
+			// on 'loadend' event. Try everything here.
+			try {
+				reader.onloadend = onloadend;
+			} catch (error) {
+				reader.addEventListener('loadend', onloadend);
+			}
+			reader.readAsText(xhr.response);
+
+			function onloadend() {
+				var mediaStreamBlobId = reader.result;
+
+				// The retrieved URL does not point to a MediaStream.
+				if (!mediaStreamBlobId || typeof mediaStreamBlobId !== 'string' || !MEDIASTREAM_ID_REGEXP.test(mediaStreamBlobId)) {
+					// If this video element was previously handling a MediaStreamRenderer, release it.
+					releaseMediaStreamRenderer(video);
+
+					return;
+				}
+
+				provideMediaStreamRenderer(video, mediaStreamBlobId);
+			}
+		};
+		xhr.send();
+	}
+
+	// The app has set video.srcObject.
+	else if (video.srcObject) {
+		stream = video.srcObject;
+
+		if (!stream.getBlobId()) {
+			// If this video element was previously handling a MediaStreamRenderer, release it.
+			releaseMediaStreamRenderer(video);
+
+			return;
 		}
-	};
-	xhr.send();
+
+		provideMediaStreamRenderer(video, stream.getBlobId());
+	}
 }
 
 
 function provideMediaStreamRenderer(video, mediaStreamBlobId) {
-	var mediaStream = mediaStreams[mediaStreamBlobId],
+	var
+		mediaStream = mediaStreams[mediaStreamBlobId],
 		mediaStreamRenderer = mediaStreamRenderers[video._iosrtcMediaStreamRendererId];
 
 	if (!mediaStream) {
@@ -2801,15 +2907,15 @@ function releaseMediaStreamRenderer(video) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./MediaStreamRenderer":4,"debug":16}],16:[function(require,module,exports){
-
+},{"./MediaStreamRenderer":4,"debug":17}],17:[function(_dereq_,module,exports){
+(function (process){
 /**
  * This is the web browser implementation of `debug()`.
  *
  * Expose `debug()` as the module.
  */
 
-exports = module.exports = require('./debug');
+exports = module.exports = _dereq_('./debug');
 exports.log = log;
 exports.formatArgs = formatArgs;
 exports.save = save;
@@ -2842,13 +2948,23 @@ exports.colors = [
  */
 
 function useColors() {
+  // NB: In an Electron preload script, document will be defined but not fully
+  // initialized. Since we know we're in Chrome, we'll just detect this case
+  // explicitly
+  if (typeof window !== 'undefined' && window.process && window.process.type === 'renderer') {
+    return true;
+  }
+
   // is webkit? http://stackoverflow.com/a/16459606/376773
-  return ('WebkitAppearance' in document.documentElement.style) ||
+  // document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
+  return (typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
     // is firebug? http://stackoverflow.com/a/398120/376773
-    (window.console && (console.firebug || (console.exception && console.table))) ||
+    (typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
     // is firefox >= v31?
     // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
-    (navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31);
+    (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31) ||
+    // double check webkit in userAgent just in case we are in a worker
+    (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/));
 }
 
 /**
@@ -2856,7 +2972,11 @@ function useColors() {
  */
 
 exports.formatters.j = function(v) {
-  return JSON.stringify(v);
+  try {
+    return JSON.stringify(v);
+  } catch (err) {
+    return '[UnexpectedJSONParseError]: ' + err.message;
+  }
 };
 
 
@@ -2866,8 +2986,7 @@ exports.formatters.j = function(v) {
  * @api public
  */
 
-function formatArgs() {
-  var args = arguments;
+function formatArgs(args) {
   var useColors = this.useColors;
 
   args[0] = (useColors ? '%c' : '')
@@ -2877,17 +2996,17 @@ function formatArgs() {
     + (useColors ? '%c ' : ' ')
     + '+' + exports.humanize(this.diff);
 
-  if (!useColors) return args;
+  if (!useColors) return;
 
   var c = 'color: ' + this.color;
-  args = [args[0], c, 'color: inherit'].concat(Array.prototype.slice.call(args, 1));
+  args.splice(1, 0, c, 'color: inherit')
 
   // the final "%c" is somewhat tricky, because there could be other
   // arguments passed either before or after the %c, so we need to
   // figure out the correct index to insert the CSS into
   var index = 0;
   var lastC = 0;
-  args[0].replace(/%[a-z%]/g, function(match) {
+  args[0].replace(/%[a-zA-Z%]/g, function(match) {
     if ('%%' === match) return;
     index++;
     if ('%c' === match) {
@@ -2898,7 +3017,6 @@ function formatArgs() {
   });
 
   args.splice(lastC, 0, c);
-  return args;
 }
 
 /**
@@ -2945,6 +3063,12 @@ function load() {
   try {
     r = exports.storage.debug;
   } catch(e) {}
+
+  // If debug isn't set in LS, and we're in Electron, try to load $DEBUG
+  if (!r && typeof process !== 'undefined' && 'env' in process) {
+    r = process.env.DEBUG;
+  }
+
   return r;
 }
 
@@ -2965,13 +3089,14 @@ exports.enable(load());
  * @api private
  */
 
-function localstorage(){
+function localstorage() {
   try {
     return window.localStorage;
   } catch (e) {}
 }
 
-},{"./debug":17}],17:[function(require,module,exports){
+}).call(this,_dereq_('_process'))
+},{"./debug":18,"_process":21}],18:[function(_dereq_,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -2980,12 +3105,12 @@ function localstorage(){
  * Expose `debug()` as the module.
  */
 
-exports = module.exports = debug;
+exports = module.exports = createDebug.debug = createDebug['default'] = createDebug;
 exports.coerce = coerce;
 exports.disable = disable;
 exports.enable = enable;
 exports.enabled = enabled;
-exports.humanize = require('ms');
+exports.humanize = _dereq_('ms');
 
 /**
  * The currently active debug mode names, and names to skip.
@@ -2997,16 +3122,10 @@ exports.skips = [];
 /**
  * Map of special "%n" handling functions, for the debug "format" argument.
  *
- * Valid key names are a single, lowercased letter, i.e. "n".
+ * Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
  */
 
 exports.formatters = {};
-
-/**
- * Previously assigned color.
- */
-
-var prevColor = 0;
 
 /**
  * Previous log timestamp.
@@ -3016,13 +3135,20 @@ var prevTime;
 
 /**
  * Select a color.
- *
+ * @param {String} namespace
  * @return {Number}
  * @api private
  */
 
-function selectColor() {
-  return exports.colors[prevColor++ % exports.colors.length];
+function selectColor(namespace) {
+  var hash = 0, i;
+
+  for (i in namespace) {
+    hash  = ((hash << 5) - hash) + namespace.charCodeAt(i);
+    hash |= 0; // Convert to 32bit integer
+  }
+
+  return exports.colors[Math.abs(hash) % exports.colors.length];
 }
 
 /**
@@ -3033,17 +3159,13 @@ function selectColor() {
  * @api public
  */
 
-function debug(namespace) {
+function createDebug(namespace) {
 
-  // define the `disabled` version
-  function disabled() {
-  }
-  disabled.enabled = false;
+  function debug() {
+    // disabled?
+    if (!debug.enabled) return;
 
-  // define the `enabled` version
-  function enabled() {
-
-    var self = enabled;
+    var self = debug;
 
     // set `diff` timestamp
     var curr = +new Date();
@@ -3053,22 +3175,22 @@ function debug(namespace) {
     self.curr = curr;
     prevTime = curr;
 
-    // add the `color` if not set
-    if (null == self.useColors) self.useColors = exports.useColors();
-    if (null == self.color && self.useColors) self.color = selectColor();
-
-    var args = Array.prototype.slice.call(arguments);
+    // turn the `arguments` into a proper Array
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
 
     args[0] = exports.coerce(args[0]);
 
     if ('string' !== typeof args[0]) {
-      // anything else let's inspect with %o
-      args = ['%o'].concat(args);
+      // anything else let's inspect with %O
+      args.unshift('%O');
     }
 
     // apply any `formatters` transformations
     var index = 0;
-    args[0] = args[0].replace(/%([a-z%])/g, function(match, format) {
+    args[0] = args[0].replace(/%([a-zA-Z%])/g, function(match, format) {
       // if we encounter an escaped % then don't increase the array index
       if (match === '%%') return match;
       index++;
@@ -3084,19 +3206,24 @@ function debug(namespace) {
       return match;
     });
 
-    if ('function' === typeof exports.formatArgs) {
-      args = exports.formatArgs.apply(self, args);
-    }
-    var logFn = enabled.log || exports.log || console.log.bind(console);
+    // apply env-specific formatting (colors, etc.)
+    exports.formatArgs.call(self, args);
+
+    var logFn = debug.log || exports.log || console.log.bind(console);
     logFn.apply(self, args);
   }
-  enabled.enabled = true;
 
-  var fn = exports.enabled(namespace) ? enabled : disabled;
+  debug.namespace = namespace;
+  debug.enabled = exports.enabled(namespace);
+  debug.useColors = exports.useColors();
+  debug.color = selectColor(namespace);
 
-  fn.namespace = namespace;
+  // env-specific initialization logic for debug instances
+  if ('function' === typeof exports.init) {
+    exports.init(debug);
+  }
 
-  return fn;
+  return debug;
 }
 
 /**
@@ -3110,7 +3237,10 @@ function debug(namespace) {
 function enable(namespaces) {
   exports.save(namespaces);
 
-  var split = (namespaces || '').split(/[\s,]+/);
+  exports.names = [];
+  exports.skips = [];
+
+  var split = (typeof namespaces === 'string' ? namespaces : '').split(/[\s,]+/);
   var len = split.length;
 
   for (var i = 0; i < len; i++) {
@@ -3170,7 +3300,39 @@ function coerce(val) {
   return val;
 }
 
-},{"ms":18}],18:[function(require,module,exports){
+},{"ms":20}],19:[function(_dereq_,module,exports){
+/*!
+  * domready (c) Dustin Diaz 2014 - License MIT
+  */
+!function (name, definition) {
+
+  if (typeof module != 'undefined') module.exports = definition()
+  else if (typeof define == 'function' && typeof define.amd == 'object') define(definition)
+  else this[name] = definition()
+
+}('domready', function () {
+
+  var fns = [], listener
+    , doc = document
+    , hack = doc.documentElement.doScroll
+    , domContentLoaded = 'DOMContentLoaded'
+    , loaded = (hack ? /^loaded|^c/ : /^loaded|^i|^c/).test(doc.readyState)
+
+
+  if (!loaded)
+  doc.addEventListener(domContentLoaded, listener = function () {
+    doc.removeEventListener(domContentLoaded, listener)
+    loaded = 1
+    while (listener = fns.shift()) listener()
+  })
+
+  return function (fn) {
+    loaded ? setTimeout(fn, 0) : fns.push(fn)
+  }
+
+});
+
+},{}],20:[function(_dereq_,module,exports){
 /**
  * Helpers.
  */
@@ -3189,17 +3351,24 @@ var y = d * 365.25;
  *  - `long` verbose formatting [false]
  *
  * @param {String|Number} val
- * @param {Object} options
+ * @param {Object} [options]
+ * @throws {Error} throw an error if val is not a non-empty string or a number
  * @return {String|Number}
  * @api public
  */
 
-module.exports = function(val, options){
+module.exports = function(val, options) {
   options = options || {};
-  if ('string' == typeof val) return parse(val);
-  return options.long
-    ? long(val)
-    : short(val);
+  var type = typeof val;
+  if (type === 'string' && val.length > 0) {
+    return parse(val);
+  } else if (type === 'number' && isNaN(val) === false) {
+    return options.long ? fmtLong(val) : fmtShort(val);
+  }
+  throw new Error(
+    'val is not a non-empty string or a valid number. val=' +
+      JSON.stringify(val)
+  );
 };
 
 /**
@@ -3211,10 +3380,16 @@ module.exports = function(val, options){
  */
 
 function parse(str) {
-  str = '' + str;
-  if (str.length > 10000) return;
-  var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(str);
-  if (!match) return;
+  str = String(str);
+  if (str.length > 100) {
+    return;
+  }
+  var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(
+    str
+  );
+  if (!match) {
+    return;
+  }
   var n = parseFloat(match[1]);
   var type = (match[2] || 'ms').toLowerCase();
   switch (type) {
@@ -3252,6 +3427,8 @@ function parse(str) {
     case 'msec':
     case 'ms':
       return n;
+    default:
+      return undefined;
   }
 }
 
@@ -3263,11 +3440,19 @@ function parse(str) {
  * @api private
  */
 
-function short(ms) {
-  if (ms >= d) return Math.round(ms / d) + 'd';
-  if (ms >= h) return Math.round(ms / h) + 'h';
-  if (ms >= m) return Math.round(ms / m) + 'm';
-  if (ms >= s) return Math.round(ms / s) + 's';
+function fmtShort(ms) {
+  if (ms >= d) {
+    return Math.round(ms / d) + 'd';
+  }
+  if (ms >= h) {
+    return Math.round(ms / h) + 'h';
+  }
+  if (ms >= m) {
+    return Math.round(ms / m) + 'm';
+  }
+  if (ms >= s) {
+    return Math.round(ms / s) + 's';
+  }
   return ms + 'ms';
 }
 
@@ -3279,12 +3464,12 @@ function short(ms) {
  * @api private
  */
 
-function long(ms) {
-  return plural(ms, d, 'day')
-    || plural(ms, h, 'hour')
-    || plural(ms, m, 'minute')
-    || plural(ms, s, 'second')
-    || ms + ' ms';
+function fmtLong(ms) {
+  return plural(ms, d, 'day') ||
+    plural(ms, h, 'hour') ||
+    plural(ms, m, 'minute') ||
+    plural(ms, s, 'second') ||
+    ms + ' ms';
 }
 
 /**
@@ -3292,44 +3477,202 @@ function long(ms) {
  */
 
 function plural(ms, n, name) {
-  if (ms < n) return;
-  if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;
+  if (ms < n) {
+    return;
+  }
+  if (ms < n * 1.5) {
+    return Math.floor(ms / n) + ' ' + name;
+  }
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-},{}],19:[function(require,module,exports){
-/*!
-  * domready (c) Dustin Diaz 2014 - License MIT
-  */
-!function (name, definition) {
+},{}],21:[function(_dereq_,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
 
-  if (typeof module != 'undefined') module.exports = definition()
-  else if (typeof define == 'function' && typeof define.amd == 'object') define(definition)
-  else this[name] = definition()
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
 
-}('domready', function () {
+var cachedSetTimeout;
+var cachedClearTimeout;
 
-  var fns = [], listener
-    , doc = document
-    , hack = doc.documentElement.doScroll
-    , domContentLoaded = 'DOMContentLoaded'
-    , loaded = (hack ? /^loaded|^c/ : /^loaded|^i|^c/).test(doc.readyState)
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
 
 
-  if (!loaded)
-  doc.addEventListener(domContentLoaded, listener = function () {
-    doc.removeEventListener(domContentLoaded, listener)
-    loaded = 1
-    while (listener = fns.shift()) listener()
-  })
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
 
-  return function (fn) {
-    loaded ? setTimeout(fn, 0) : fns.push(fn)
-  }
 
-});
 
-},{}],20:[function(require,module,exports){
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],22:[function(_dereq_,module,exports){
 void function(root){
 
   function defaults(options){
@@ -3375,13 +3718,13 @@ void function(root){
   module.exports.defaults = defaults
 }(this)
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(_dereq_,module,exports){
 module.exports = {
-	EventTarget : require('./lib/EventTarget'),
-	Event       : require('./lib/Event')
+	EventTarget : _dereq_('./lib/EventTarget'),
+	Event       : _dereq_('./lib/Event')
 };
 
-},{"./lib/Event":22,"./lib/EventTarget":23}],22:[function(require,module,exports){
+},{"./lib/Event":24,"./lib/EventTarget":25}],24:[function(_dereq_,module,exports){
 (function (global){
 /**
  * In browsers export the native Event interface.
@@ -3390,7 +3733,7 @@ module.exports = {
 module.exports = global.Event;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],23:[function(require,module,exports){
+},{}],25:[function(_dereq_,module,exports){
 /**
  * Expose the _EventTarget class.
  */
@@ -3511,5 +3854,5 @@ function _dispatchEvent(event) {
 	return !event.defaultPrevented;
 }
 
-},{}]},{},[13])(13)
+},{}]},{},[15])(15)
 });
