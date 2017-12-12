@@ -26,8 +26,8 @@ class PluginMediaStreamRenderer : NSObject, RTCEAGLVideoViewDelegate {
 		// The effective video view in which the the video stream is shown.
 		// It's placed over the elementView.
 		self.videoView = RTCEAGLVideoView()
-        self.videoView.opaque = false
-        self.videoView.backgroundColor = UIColor.blackColor()
+        self.videoView.isOpaque = false
+        self.videoView.backgroundColor = UIColor.black
 
 		self.elementView.isUserInteractionEnabled = false
 		self.elementView.isHidden = true

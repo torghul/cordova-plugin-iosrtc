@@ -21,22 +21,24 @@ class PluginRTCPeerConnectionConstraints {
 			return
 		}
 
-		if optionalConstraints != nil {
- 			for (key, value) in optionalConstraints! {
- 				var finalValue: String;
- 				if value is Bool {
- 					finalValue = value as! Bool ? "true" : "false"
- 				} else {
- 					finalValue = value as! String
- 				}
- 				optionalPairArray.append(RTCPair(key: key as! String, value: finalValue))
- 			}
-		}
-
-		self.constraints = RTCMediaConstraints(
-			mandatoryConstraints: mandatoryPairArray,
- 			optionalConstraints: optionalPairArray
-		)
+        if offerToReceiveAudio == nil {
+            offerToReceiveAudio = false
+        }
+        
+        if offerToReceiveVideo == nil {
+            offerToReceiveVideo = false
+        }
+        
+        NSLog("PluginRTCPeerConnectionConstraints#init() | [offerToReceiveAudio:%@, offerToReceiveVideo:%@]",
+              String(offerToReceiveAudio!), String(offerToReceiveVideo!))
+        
+        self.constraints = RTCMediaConstraints(
+            mandatoryConstraints: [
+                RTCPair(key: "OfferToReceiveAudio", value: offerToReceiveAudio == true ? "true" : "false"),
+                RTCPair(key: "OfferToReceiveVideo", value: offerToReceiveVideo == true ? "true" : "false")
+            ],
+            optionalConstraints: []
+        )
 	}
 
 

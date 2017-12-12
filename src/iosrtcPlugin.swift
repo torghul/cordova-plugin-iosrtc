@@ -45,13 +45,13 @@ class iosrtcPlugin : CDVPlugin {
 			rtcPeerConnectionFactory: rtcPeerConnectionFactory
 		)
         
-        self.webView?.opaque = false
-        self.webView?.backgroundColor = UIColor.clearColor()
+        self.webView?.isOpaque = false
+        self.webView?.backgroundColor = UIColor.clear
         
         let image = appLaunchImage()
 
-        let screenSize:CGRect = UIScreen.mainScreen().bounds
-        let screenSizeWithoutBounds = UIScreen.mainScreen().applicationFrame;
+        let screenSize:CGRect = UIScreen.main.bounds
+        let screenSizeWithoutBounds = UIScreen.main.applicationFrame;
         let screenWidth = screenSize.width
         let screenHeight = screenSize.height
         let y = screenHeight - screenSizeWithoutBounds.height
@@ -63,13 +63,13 @@ class iosrtcPlugin : CDVPlugin {
 	}
 
     func appLaunchImage() -> UIImage? {
-        let allPngImageNames = NSBundle.mainBundle().pathsForResourcesOfType("png", inDirectory: nil)
+        let allPngImageNames = Bundle.main.paths(forResourcesOfType: "png", inDirectory: nil)
 
         for imageName in allPngImageNames {
-            guard imageName.containsString("LaunchImage") else {continue}
+            guard imageName.contains("LaunchImage") else {continue}
             guard let image = UIImage(named: imageName) else {continue}
 
-            if(image.scale == UIScreen.mainScreen().scale && (CGSizeEqualToSize(image.size, UIScreen.mainScreen().bounds.size))) {
+            if(image.scale == UIScreen.main.scale && (image.size.equalTo(UIScreen.main.bounds.size))) {
                 return image
             }
         }
